@@ -1,0 +1,27 @@
+
+body{
+    font-family: 'Roboto', sans-serif;
+    color: #5b5b5b;
+}
+
+/* DONACIONES ALIDA */
+.titulo{
+    text-align: center;
+}
+
+.conttotaldonaciones{
+    display: flex;
+}
+.conttotaldonado{
+    display: flex;
+}
+
+.totaldonado{
+    padding-left: 52%;
+}
+
+/* BARRA DE NAVEGACION */
+.font-roboto{
+    font-family:'Roboto', Arial, Tahoma, sans-serif;
+    font-size: 1.5rem;
+}
