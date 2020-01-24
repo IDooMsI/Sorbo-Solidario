@@ -1,21 +1,27 @@
 <?php
+
+include_once('sorbo.php');
+
 class Db{
-    protected $com;   
+
+    protected $conn;   
+
     public function __construct(){
         $dsn = 'mysql:host=localhost;dbname=sorbo_solidario;charset=utf8mb4;port=3306';
         $user = 'root';
         $pass = '';
 
         try{
-            $this->com = new PDO($dsn,$user,$pass);
+            $this->conn = new PDO($dsn,$user,$pass);
         } catch (Exception $e){
             echo "La conexion a la base de datos fallo: " .$e->getMessage();
         }
         
     }
 
-    public function guardarSorbo(Sorbo $sorbo){
-        $db = $this->com;
+    public function guardarSorbo(Sorbo $sorbo): Sorbo{
+        $db = $this->conn;
+
         $query = $db->prepare("INSERT INTO sorbos VALUES(default, :donador, :numero_de_sorbo, :fecha, :establecimiento, :organizador,NULL)");
         $query->bindvalue(":donador", $sorbo->getDonador(), PDO::PARAM_STR);
         $query->bindvalue(":numero_de_sorbo", $sorbo->getNumero_de_sorbo());
@@ -23,19 +29,22 @@ class Db{
         $query->bindValue(":establecimiento", $sorbo->getEstablecimiento());
         $query->bindValue(":organizador",$sorbo->getOrganizador());
         // $query->bindValue(":id_causa",$sorbo->getCausa());
-        $id = $db->lastInsertId();
-        $sorbo->setId($id);
+
         try {
+
             $query->execute();
+            $id = $db->lastInsertId();
+            $sorbo->setId($id);
+
         } catch (Exception $e) {
             echo "La conexion a la base de datos fallo:" . $e->getMessage();
         }
+
         return $sorbo;
-        var_dump($sorbo);
     }
 
     public function traerSorbos(Causa $causa){
-        $db = $this->com;
+        $db = $this->conn;
         $query = $db->prepare("SELECT * FROM sorbos WHERE $causa->getNombre() = :causa");
         $query->execute();
 
@@ -50,7 +59,7 @@ class Db{
     }
 
     public function guardarCausa(causa $causa){
-        $db = $this->com;
+        $db = $this->conn;
         $query = $db->prepare("Insert into causas values(default, :nombre)");
         $query->bindvalue(":nombre", $causa->getNombre());
 
@@ -61,7 +70,7 @@ class Db{
     }
     
     public function traerCausas($id){
-        $db = $this->com;
+        $db = $this->conn;
         $query = $db->prepare("SELECT * FROM causas WHERE id = :id");
         $query-> bindvalue(":id",$id);
         $query->execute();
