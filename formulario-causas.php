@@ -1,41 +1,16 @@
 <?php
-include_once("clases/sorbo.php");
-include_once("clases/db.php");
-// $causasJson = file_get_contents("base-de-datos/causas");
-// $causasArray = json_decode($causasJson, true);
-$db = new Db;
 if (isset($_POST["submit"])) {
-    $donador = $_POST["donador"];
-    $codigo = $_POST["pin"];
-    $fecha = $_POST["fecha"];
-    $establecimiento = $_POST["establecimiento"];
-    $organizador = $_POST["organizador"];
-    $causa = "127";
-    //INTENTAMOS QUE SE GUARDE EN BASE DE DATOS
-    $sorbo = new Sorbo($donador,$codigo,$fecha,$establecimiento,$organizador,$causa);
-    var_dump($sorbo);
-    if ($sorbo) {
-        $guardarSorbo  = $db->guardarSorbo($sorbo);
-    }else{
-        echo "no se pudo crear el sorbo";
-    }
-    
-    //----------------------------------------
-    // $donacion = [
-    //     "donador" =>"$donador",
-    //     // "cantidad" =>"$cantidad",
-    //     "codigo" => "$codigo",
-    //     "fecha" =>  "$fecha",
-    //     "establecimiento" => "$establecimiento",
-    //     "organizador" => "$organizador"
-    // ];
-    // if (isset($donacion)) {
-    //     $base = file_get_contents("base-de-datos/base.json"); 
-    //     $arrayDonaciones = json_decode($base,true);
-    //     $arrayDonaciones[]=$donacion;
-    //     $jsonDonaciones = json_encode($arrayDonaciones);
-    //     file_put_contents('base-de-datos/base.json',$jsonDonaciones);
-    // }    
+    $newCausa = $_POST["causa"];
+    $causa = [
+        "causa" =>"$newCausa",
+    ];
+    if (isset($causa)) {
+        $base = file_get_contents("base-de-datos/base-causas.json"); 
+        $arrayCausas = json_decode($base,true);
+        $arrayCausas[]=$causa;
+        $jsonCausas = json_encode($arrayCausas);
+        file_put_contents('base-de-datos/base-causas.json',$jsonCausas);
+    }    
 }
 ?>
 <!DOCTYPE html>
@@ -57,7 +32,7 @@ if (isset($_POST["submit"])) {
             crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/style.css"><!--CSS-->
-    <title>Document</title>
+    <title>Agregar Causa</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -79,16 +54,16 @@ if (isset($_POST["submit"])) {
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-4 mx-auto "><h2>Ingreso de sorbos</h2></div>
+            <div class="col-12 col-md-4 mx-auto "><h2>Ingreso de Causas</h2></div>
         </div>
         <form action="" method="post"  enctype="multipart/form-data" >
             <div class="row">
                 <div class="mx-auto">            
                     <div class="col-12 col-md-6">        
-                        <label for="">Donador:</label>
-                        <input name="donador" type="text" value="" required>
+                        <label for="">Nombre de Causa:</label>
+                        <input name="causa" type="text" value="" required>
                     </div>
-                    <div class="col-12 col-md-6">
+                    <!-- <div class="col-12 col-md-6">
                         <label for="">Numero del Sorbo:</label>
                         <input name="pin" type="string" value="" required>
                     </div>
@@ -103,7 +78,7 @@ if (isset($_POST["submit"])) {
                     <div class="col-12 col-md-6">
                         <label for="">Oganizador:</label>
                         <input name="organizador" type="text" value="" required>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="row mt-3">
@@ -112,10 +87,10 @@ if (isset($_POST["submit"])) {
                 </div>
             </div>
         </form>
-        <?php if(isset($_POST["pin"])):?>
+        <?php if(isset($_POST["causa"])):?>
             <div class="row">
                 <div class="col-4 mx-auto mt-3">
-                    <span>Donador agregado con exito</span>
+                    <span>Causa agregada con exito</span>
                 </div>
             </div>
         <?php endif; ?>

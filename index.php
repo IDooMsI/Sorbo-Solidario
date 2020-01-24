@@ -3,10 +3,6 @@ $donado = [];
 
 $donacionesJson = file_get_contents("base-de-datos/base.json");
 $arrayDonaciones = json_decode($donacionesJson,true);
-foreach ($arrayDonaciones as $key => $donaciones) {
-     $donado[] .= $donaciones["cantidad"];
-}
-$totalDonado = array_sum($donado);
 $totalDonaciones = count($arrayDonaciones);
 ?>
 <!DOCTYPE html>
@@ -21,7 +17,7 @@ $totalDonaciones = count($arrayDonaciones);
             integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
             crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3    zV9zzTtmI3UksdQRVvoxMfooAo"
             crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
@@ -57,30 +53,30 @@ $totalDonaciones = count($arrayDonaciones);
                 <div class="row titulo">
                     <h1 class="col-12">Sorbos recaudados para <b>Alida</b></h1>
                 </div>
+                <div class="row my-3">
+                <div class="col-12 conttotaldonado">
+                        <div class="col-9">
+                            <h3 class="totaldonado">Total de Sorbos:<b><?= $totalDonaciones ?></b></h3>
+                        </div>
+                    </div>
+                </div>
                 <div class="row mt-4" style="overflow-x:auto;">
                     <table class=" col-12 table">
                         <tr class="">
-                            <th class="">Colaborador</th>
-                            <th class="">Total de Sorbos</th>
-                            <th class="">N° Sorbo</th>
-                            <th class="">Fecha</th>
-                            <th class="">Lugar</th>
-                            <th class="">Organiza</th>
+                            <th>Colaborador</th>
+                            <th>N° Sorbo</th>
+                            <th>Fecha</th>
+                            <th>Lugar</th>
+                            <th>Organiza</th>
                         </tr>
                         <?php foreach($arrayDonaciones as $key => $donacion): ?>
                             <tr class="">
                             <?php foreach($donacion as $dato): ?>
-                                <th class=""><?= $dato?></th>
+                                <th><?= $dato?></th>
                             <?php endforeach;?>        
                             </tr>    
                         <?php endforeach;?>    
                     </table>
-                </div>
-                <div class="row my-3">
-                    <div class="col-12 conttotaldonado">
-                        <div class="col-6"><h3 class="totaldonado">Total de Sorbos:</h3></div>
-                        <div class="col-6 col-md-1"><h4 class="totaldonado"><b><?= $totalDonado ?></b></h4></div>
-                    </div>
                 </div>
             </div>
         </div>
