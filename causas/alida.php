@@ -1,9 +1,11 @@
 <?php
-$donado = [];
+include_once("../clases/db.php");
 
-$donacionesJson = file_get_contents("base-de-datos/base.json");
-$arrayDonaciones = json_decode($donacionesJson,true);
-$totalDonaciones = count($arrayDonaciones);
+$db = new Db;
+$causa = "Alida";
+$sorbos = $db->traerSorbos($causa);
+$cantidad = $db->contarSorbos($causa);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,14 +25,14 @@ $totalDonaciones = count($arrayDonaciones);
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css"><!--CSS-->
+    <link rel="stylesheet" href="../css/style.css"><!--CSS-->
     <title>Donaciones Alida</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div>
             <a class="navbar-brand" href="#">
-                <img src="img/logo.png" alt="logotipo" width="19%">
+                <img src="../img/logo.png" alt="logotipo" width="19%">
             </a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,18 +47,18 @@ $totalDonaciones = count($arrayDonaciones);
         </div>
     </nav>
     <div>
-        <img src="img/imagen-de-causas2.png" alt="" width="100%">
+        <img src="../img/imagen-de-causas2.png" alt="" width="100%">
     </div>
     <div class="container fuente">
         <div class="row">
             <div class="col-12">
                 <div class="row titulo">
-                    <h1 class="col-12">Sorbos recaudados para <b>Alida</b></h1>
+                    <h1 class="col-12">Sorbos recaudados para <b><?= $causa ?></b></h1>
                 </div>
                 <div class="row my-3">
                 <div class="col-12 conttotaldonado">
                         <div class="col-9">
-                            <h3 class="totaldonado">Total de Sorbos:<b><?= $totalDonaciones ?></b></h3>
+                            <h3 class="totaldonado">Total de Sorbos:<b><?= $cantidad ?></b></h3>
                         </div>
                     </div>
                 </div>
@@ -69,13 +71,15 @@ $totalDonaciones = count($arrayDonaciones);
                             <th>Lugar</th>
                             <th>Organiza</th>
                         </tr>
-                        <?php foreach($arrayDonaciones as $key => $donacion): ?>
+                        <?php foreach($sorbos as $sorbo): ?>
                             <tr class="">
-                            <?php foreach($donacion as $dato): ?>
-                                <th><?= $dato?></th>
-                            <?php endforeach;?>        
-                            </tr>    
-                        <?php endforeach;?>    
+                                <th><?= $sorbo["donador"]?></th>
+                                <th><?= $sorbo["numero_de_sorbo"]?></th>
+                                <th><?= $sorbo["fecha"]?></th>
+                                <th><?= $sorbo["establecimiento"]?></th>
+                                <th><?= $sorbo["organizador"]?></th>
+                            </tr>
+                        <?php endforeach;?>
                     </table>
                 </div>
             </div>

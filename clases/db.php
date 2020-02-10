@@ -1,15 +1,15 @@
 <?php
-
 include_once('sorbo.php');
+include_once('causa.php');
 
 class Db{
 
     protected $conn;   
 
     public function __construct(){
-        $dsn = 'mysql:host=localhost;dbname=sorbo_solidario;charset=utf8mb4;port=3306';
-        $user = 'root';
-        $pass = '';
+        $dsn = 'mysql:host=sql;dbname=sorbosolidario;charset=utf8mb4;port=3306';
+        $user = 'sorbosolidario';
+        $pass = 'sorbosolidario';
 
         try{
             $this->conn = new PDO($dsn,$user,$pass);
@@ -19,16 +19,16 @@ class Db{
         
     }
 
-    public function guardarSorbo(Sorbo $sorbo): Sorbo{
+    public function guardarSorbo(Sorbo $sorbo): Sorbo
+    {
         $db = $this->conn;
-
-        $query = $db->prepare("INSERT INTO sorbos VALUES(default, :donador, :numero_de_sorbo, :fecha, :establecimiento, :organizador,NULL)");
+        $query = $db->prepare("INSERT INTO sorbo VALUES(default, :donador, :numero_de_sorbo, :fecha, :establecimiento, :organizador, :causa)");
         $query->bindvalue(":donador", $sorbo->getDonador(), PDO::PARAM_STR);
-        $query->bindvalue(":numero_de_sorbo", $sorbo->getNumero_de_sorbo());
+        $query->bindvalue(":numero_de_sorbo", $sorbo->getNumeroDeSorbo());
         $query->bindValue(":fecha", $sorbo->getFecha());
         $query->bindValue(":establecimiento", $sorbo->getEstablecimiento());
         $query->bindValue(":organizador",$sorbo->getOrganizador());
-        // $query->bindValue(":id_causa",$sorbo->getCausa());
+        $query->bindValue(":causa",$sorbo->getCausa());
 
         try {
 
@@ -43,30 +43,42 @@ class Db{
         return $sorbo;
     }
 
-    public function traerSorbos(Causa $causa){
+    public function traerSorbos(string $causa): array
+    {
         $db = $this->conn;
-        $query = $db->prepare("SELECT * FROM sorbos WHERE $causa->getNombre() = :causa");
+    
+        $query = $db->prepare("SELECT * FROM sorbo WHERE causa = '$causa'");
         $query->execute();
-
-        $sorbosArray = $query->fetchAll();
-        $sobroClass = [];
-
-        foreach($sorbosArray as $sorbo){
-            $sobroClass[] = new Sorbo($sorbo["donador"], $sorbo["numero_de_sorbo"], $sorbo["fecha"], $sorbo["establecimiento"], $sorbo["organizador"], $sorbo["id_causa"]);
-        }
-
-        return $sobroClass;
+        $sorbos = $query->fetchAll(PDO::FETCH_ASSOC);
+            
+        return $sorbos;
     }
 
-    public function guardarCausa(causa $causa){
+    public function contarSorbos($causa): int
+    {
         $db = $this->conn;
-        $query = $db->prepare("Insert into causas values(default, :nombre)");
+    
+        $query = $db->prepare("SELECT * FROM sorbo WHERE causa = '$causa'");
+        $query->execute();
+        $cantidad = $query->rowCount();
+            
+        return $cantidad;
+    }
+
+    public function guardarCausa(Causa $causa): Causa
+    {
+        $db = $this->conn;
+        $query = $db->prepare("Insert into causa0 values(default, :nombre)");
         $query->bindvalue(":nombre", $causa->getNombre());
 
-        $id = $db->lastInsertId();
-        $causa->setId(id);
+        try {
 
-        $query->execute();
+            $query->execute();
+
+        } catch (Exception $e) {
+            echo "La conexion a la base de datos fallo:" . $e->getMessage();
+        }
+        return $causa;
     }
     
     public function traerCausas($id){

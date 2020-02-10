@@ -1,0 +1,14 @@
+CREATE TABLE sorbo (
+    id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    donador VARCHAR(255) NOT NULL,
+    numero_de_sorbo VARCHAR(255) NOT NULL UNIQUE,
+    fecha DATE NOT NULL,
+    establecimiento VARCHAR(255) NOT NULL,
+    organizador VARCHAR(255) NOT NULL,
+    causa VARCHAR(255) NULl
+);
+
+CREATE TABLE causa (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    causa VARCHAR(255) NOT NULL
+);
