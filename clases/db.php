@@ -7,9 +7,15 @@ class Db{
     protected $conn;   
 
     public function __construct(){
+<<<<<<< HEAD
         $dsn = 'mysql:host=sql;dbname=sorbosolidario;charset=utf8mb4;port=3306';
         $user = 'sorbosolidario';
         $pass = 'sorbosolidario';
+=======
+        $dsn = 'mysql:host=db5000272134.hosting-data.io;dbname=dbs265618;charset=utf8mb4;port=3306';
+        $user = 'dbu438447';
+        $pass = 'Ferreyra24111972.';
+>>>>>>> modificaciones varias
 
         try{
             $this->conn = new PDO($dsn,$user,$pass);
@@ -52,6 +58,7 @@ class Db{
         $sorbos = $query->fetchAll(PDO::FETCH_ASSOC);
             
         return $sorbos;
+<<<<<<< HEAD
     }
 
     public function contarSorbos($causa): int
@@ -80,18 +87,18 @@ class Db{
         }
         return $causa;
     }
-    
-    public function traerCausas($id){
-        $db = $this->conn;
-        $query = $db->prepare("SELECT * FROM causas WHERE id = :id");
-        $query-> bindvalue(":id",$id);
-        $query->execute();
+=======
+    }
 
-        $causasFormatoArray = $query->fetch();
-        if ($causasFormatoArray) {
-            return new Causa($causasFormatoArray["id"]);
-        }
+    public function contarSorbos($causa): int
+    {
+        $db = $this->conn;
+>>>>>>> modificaciones varias
+    
+        $query = $db->prepare("SELECT * FROM sorbo WHERE causa = '$causa'");
+        $query->execute();
+        $cantidad = $query->rowCount();
+            
+        return $cantidad;
     }
 }
-
-?>
