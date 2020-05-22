@@ -65,22 +65,6 @@ class Sorbo{
     public function setOrganizador($organizador){
         $this->organizador = $organizador;
     }
-<<<<<<< HEAD
-
-    public function getCausa(): string
-    {
-        return $this->causa;
-    }
-
-    public function setCausa($causa): void
-    {
-        $this->causa = $causa;
-    }
-
-}
-
-=======
->>>>>>> modificaciones varias
 
     public function getCausa(): string
     {
